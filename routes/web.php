@@ -154,11 +154,18 @@ Route::prefix('accounts')->name('account')->group(function (){
                 {
                 
                     
-                    return redirect()->route('home')->with('messages', 'You Are Login SuccessFully');
+                    return redirect()->route('account-dashboard')->with('messages', 'You Are Login SuccessFully');
                     
                 }
                 return redirect()->back()->withErrors(['password' => "Your Email Or Password Is Invalid"]);
         }
 
     })->name('-login');
+
+
+    Route::get('dashboard', function(Request $request)
+    {
+
+        return view(view: 'accounts.dashboard');
+    })->name('-dashboard');
 });
