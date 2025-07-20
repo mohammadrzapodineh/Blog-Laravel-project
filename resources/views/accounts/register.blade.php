@@ -16,14 +16,14 @@
           class="img-fluid" alt="Sample image">
       </div>
       <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <form method="post" action="{{ route('account-register') }}" novalidate>
+        <form method="post" action="{{ route('account-register') }}" enctype="multipart/form-data" novalidate>
             @csrf
           <!-- Email input -->
 
           <div data-mdb-input-init class="form-outline mb-4">
                  <label class="form-label" for="form3Example3">Name </label>
             <input name="name" type="text" id="form3Example3" class="form-control form-control-lg"
-              placeholder="Enter Your Name Here .." />
+              placeholder="Enter Your Name Here .." value="{{ old('name') }}" />
        
 
             @error('name')
@@ -36,7 +36,7 @@
           <div data-mdb-input-init class="form-outline mb-4">
                         <label class="form-label" for="form3Example3">Email address</label>
             <input name="email" type="email" id="form3Example3" class="form-control form-control-lg"
-              placeholder="Enter a valid email address" />
+              placeholder="Enter a valid email address" value="{{ old('email') }}" />
 
             @error('email')
             <p class="text-danger">{{ $message }}</p>
@@ -62,6 +62,18 @@
               placeholder="Enter password" />
 
             @error('password_confirmation')
+            <p class="text-danger">{{ $message }}</p>
+           @enderror
+          </div>
+
+
+
+              <div data-mdb-input-init class="form-outline mb-3">
+             <label class="form-label" for="form3Example4">Your Avatar </label>
+            <input name="avatar" type="file" id  class="form-control form-control-lg"
+              placeholder="Enter password" />
+
+            @error('avatar')
             <p class="text-danger">{{ $message }}</p>
            @enderror
           </div>

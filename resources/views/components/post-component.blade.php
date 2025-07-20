@@ -1,6 +1,6 @@
             <div class="col">
           <div class="card shadow-sm">
-            <img class="bd-placeholder-img card-img-top" src="{{ Storage::disk('avatars')->url($article->image_url) }}">
+            <img class="bd-placeholder-img card-img-top" src="{{ asset('storage/'. $article->image_url) }}">
 
             <div class="card-body">
               <p class="card-text">{{ $article->title }}</p>

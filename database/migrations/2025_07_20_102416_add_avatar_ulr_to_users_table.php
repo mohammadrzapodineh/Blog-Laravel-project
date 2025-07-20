@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->integer('author_id')->after('id')->default(1);
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('avatar_url')->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropColumn('author_id');
+        Schema::table('users', function (Blueprint $table) {
+            //
         });
     }
 };

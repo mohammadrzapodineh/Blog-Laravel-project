@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 Route::get('', function()
-{   $articles = Post::all();
-
-    return view('home', compact('articles'));
+{   $users = User::all();
+    return view('home', compact('users'));
 })->name('home');
 
 
@@ -31,17 +30,24 @@ Route::prefix('articles')->name('article')->group(function() {
                 'title' => ['required', 'min:5', 'max:255', new NumberRule],
                 'text' => ['required', 'max:500'],
                 'category' => ['required', 'min:5'],
-                'image' => ['nullable', 'mimes:jpg,png,jpeg']
+                'image' => ['nullable', 'mimes:jpg,png,jpeg'],
+
             ]
             );
-            if($request->hasFile('image'))
-            {
-                $image = $request->file('image')->store('avatars');
-            }
-            Post::create([
+
+            $newPost = Post::create([
+                'user_id' => 5,
                 'image_url' => $validatedData['image'],
                 ...$validatedData
             ]);
+
+            if($request->hasFile('image'))
+            {
+                $articleImageName =  $validatedData["title"] . "-." . $request->file('image')->getClientOriginalExtension();
+                $articleImagePath = $request->file('image')->storeAs('uploads/articles/', $articleImageName, 'public');
+                $newPost->image_url = $articleImagePath;
+                $newPost -> save();
+            }
             return redirect()->route('article-list')->with('messages', 'Article Is Created Successfully');
         }
     })->name('-create');;
@@ -85,7 +91,8 @@ Route::prefix('articles')->name('article')->group(function() {
 
 
     Route::get('', function ()
-    {   $articles = Post::all();
+    {  
+        $articles = Post::all();
         return view('blog/article-list', compact('articles'));
     })->name('-list');
 
@@ -95,6 +102,13 @@ Route::prefix('articles')->name('article')->group(function() {
         return view('blog/article-detail', compact('article'));
     })->name('-detail');
 
+
+        Route::get('author/{user}/articles', function (User $user)
+    {   
+
+        $articles = $user->posts()->get();
+        return view('blog/article-list', compact('articles'));
+    })->name('-author-articles');
 
 
 
@@ -113,20 +127,30 @@ Route::prefix('accounts')->name('account')->group(function (){
         {
        
             $validatedData = $request->validate(
+                
                 [
                     "name" => ['required', 'max:220'],
                     'email' => ['required', 'email'],
-                    'password' => ['required',  new Password(8), 'confirmed']
+                    'password' => ['required',  new Password(8), 'confirmed'],
+                    'avatar' => ['mimes:jpg,png', 'nullable', 'image', 'max:3048']
 
                 ]
                 );
             $hashedPassword = Hash::make($validatedData['password'], ['rounds' => 12]);
             $userExsits = User::where('email', $validatedData['email'])->first();
             if (!$userExsits)
-            {    User::create([
+            {    $user = User::create([
                     'password' => $hashedPassword,
                     ...$validatedData
                 ]);
+
+                if ($request->hasFile('avatar'))
+                {
+                    $imageFileName ="avatar-$user->email." . $request->file('avatar')->getClientOriginalExtension();
+                    $imagePath = $request->file('avatar')->storeAs('uploads/avatar/', $imageFileName ,'public');
+                    $user->avatar_url = $imagePath;
+                    $user->save();
+                }
                 return redirect()->route('account-login')->with('messages', 'Your Account Created Susccessfully You Can Login ! ');
             }
             return redirect()->back()->withErrors(['email' => "This Email Is Taken"]);

@@ -15,15 +15,18 @@
           <a href="{{ route('account-login') }}" class="btn btn-warning my-2">Login/Register</a>
         </p>
       </div>
+      <br>
+      
     </div>
   </section>
-
+  
   <div class="album py-5 bg-light">
+  <h2 class="fw-light text-center">Recent Authors</h1>
     <div class="container">
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-        @forelse($articles as $article)
-        <x-post-component :article="$article"></x-post-component>
+        @forelse($users as $user)
+        <x-user-component :user="$user"></x-user-component>
         @empty
         <p class="text text-danger">There is Not Article</p>
         @endif        
