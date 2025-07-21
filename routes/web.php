@@ -43,6 +43,8 @@ Route::prefix('articles')->name('article')->group(function() {
 
             if($request->hasFile('image'))
             {
+
+                
                 $articleImageName =  $validatedData["title"] . "-." . $request->file('image')->getClientOriginalExtension();
                 $articleImagePath = $request->file('image')->storeAs('uploads/articles/', $articleImageName, 'public');
                 $newPost->image_url = $articleImagePath;
@@ -70,10 +72,20 @@ Route::prefix('articles')->name('article')->group(function() {
             $validatedData = $request->validate([
                 'title' => ['required', 'min:5', 'max:255', new NumberRule],
                 'text' => ['required', 'max:500'],
-                'category' => ['required', 'min:5']
+                'category' => ['required', 'min:5'],
+                'image_url' => ['nullable', 'image', 'max:3034', 'mimes:jpg,png']
             ]
             );
-            $article->update([...$validatedData]);
+
+            if($request -> hasFile('image_url'))
+            {
+                $randomNumber = random_int(100, 2000);
+                $clened_name = str_replace(' ', '-', $article->title);
+                $imageFileName = $clened_name . "-$randomNumber.". $request->file('image_url')->getClientOriginalExtension();
+                $imagePath = $request->file('image_url')->storeAs('uploads/articles', $imageFileName, 'public');
+                $validatedData['image_url'] = $imagePath;
+            }
+            $article->update($validatedData);
             $message = "Article:$article->title  Has Updated Successfully";
             return redirect()->route(route: 'article-list')->with("messages", $message);
         }
