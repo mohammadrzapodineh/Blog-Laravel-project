@@ -9,7 +9,9 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
 Route::get('', function()
-{   $users = User::all();
+{
+   $users = User::orderByDesc('created_at')->get();
+
     return view('home', compact('users'));
 })->name('home');
 
@@ -104,7 +106,7 @@ Route::prefix('articles')->name('article')->group(function() {
 
     Route::get('', function ()
     {  
-        $articles = Post::all();
+        $articles = Post::orderByDesc('updated_at')->get();
         return view('blog/article-list', compact('articles'));
     })->name('-list');
 
@@ -119,7 +121,13 @@ Route::prefix('articles')->name('article')->group(function() {
     {   
 
         $articles = $user->posts()->get();
-        return view('blog/article-list', compact('articles'));
+        $author = $user->name;
+        $data = [
+            "articles" => $articles,
+            "author" => $author
+        ];
+
+        return view('blog/article-list', $data);
     })->name('-author-articles');
 
 

@@ -7,7 +7,13 @@
   <section class="py-5 text-center container">
     <div class="row py-lg-5">
       <div class="col-lg-6 col-md-8 mx-auto">
-        <h1 class="fw-light">Article List</h1><p>You Can See All of Article This My Site</p>
+        <h1 class="fw-light">
+          @if(isset($author))
+          {{ "Articles of: $author" }}
+          @else
+          {{ "Articles List" }}
+          @endif
+        </h1></h1><p>You Can See All of Article This My Site</p>
         <p>
           <a href="{{ route('article-create') }}" class="btn btn-primary my-2">Create Article</a>
         </p>
