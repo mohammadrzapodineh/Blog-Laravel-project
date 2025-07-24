@@ -11,7 +11,13 @@
     Author: {{ $article->user->name }}
 </h3>
 
-
+@forelse($comments as $comment)
+<span>
+  {{ $comment->text }}
+</span>
+@empty
+<p class="text text-danger">This Article Has not Commetns</p>
+@endforelse
 
 <section style="background-color: #d94125;">
   <div class="container my-5 py-5 text-body">

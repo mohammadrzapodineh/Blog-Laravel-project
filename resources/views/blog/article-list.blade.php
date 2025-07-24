@@ -15,7 +15,7 @@
           @endif
         </h1></h1><p>You Can See All of Article This My Site</p>
         <p>
-          <a href="{{ route('article-create') }}" class="btn btn-primary my-2">Create Article</a>
+          <a href="{{ route('articles.create') }}" class="btn btn-primary my-2">Create Article</a>
         </p>
       </div>
     </div>
@@ -27,8 +27,11 @@
         @empty
         <p class="text text-danger">There is Not Article</p>
         @endforelse
-
+      
       </div>
+
+      
     </div>
   </div>
+  
 @endsection

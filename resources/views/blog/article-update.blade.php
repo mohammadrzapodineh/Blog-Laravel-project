@@ -7,7 +7,7 @@
 
 
 @section('content')
-<h1>Update: {{ $article->title }}</h1><form method="post" action="{{ route('article-update', ["post" => $article->id]) }}"  enctype="multipart/form-data">
+<h1>Update: {{ $article->title }}</h1><form method="post" action="{{ route('articles.update', ["article" => $article->id]) }}"  enctype="multipart/form-data">
     @csrf
     @method('put')
   <div class="form-group">

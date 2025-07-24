@@ -23,7 +23,7 @@
           <div data-mdb-input-init class="form-outline mb-4">
                         <label class="form-label" for="form3Example3">Email address</label>
             <input name="email" type="email" id="form3Example3" class="form-control form-control-lg"
-              placeholder="Enter a valid email address" />
+              placeholder="Enter a valid email address" value="{{ old('email') }}" />
 
             @error('email')
             <p class="text-danger">{{ $message }}</p>

@@ -11,8 +11,13 @@
         <h1 class="fw-light">Welcome To My Personal Blog</h1>
         <p class="lead text-muted">This is My First Laravel Project </p>
         <p>
-          <a href="{{ route('article-list') }}" class="btn btn-primary my-2">More Articles</a>
-          <a href="{{ route('account-login') }}" class="btn btn-warning my-2">Login/Register</a>
+          <a href="{{ route('articles.index') }}" class="btn btn-primary my-2">More Articles</a>
+         @auth
+          <a href="{{ route('articles.create') }}" class="btn btn-success my-2">Create Your Article</a>
+
+        @else
+         <a href="{{ route('account-login') }}" class="btn btn-warning my-2">Login/Register</a>
+         @endauth
         </p>
       </div>
       <br>

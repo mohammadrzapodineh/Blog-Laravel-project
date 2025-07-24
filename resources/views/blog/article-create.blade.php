@@ -3,7 +3,7 @@
 @section('title', 'Article Create')
 
 @section('content')
-<form method="post" action="{{ route('article-create') }} " enctype="multipart/form-data">
+<form method="post" action="{{ route('articles.store') }} " enctype="multipart/form-data">
     @csrf
   <div class="form-group">
     <label for="exampleInputEmail1">title</label>
@@ -36,7 +36,7 @@
 
    <div class="form-group">
     <label for="exampleInputPassword1">image</label>
-    <input name="image" type="file" class="form-control" name="category"id="exampleInputPassword1">
+    <input name="image_url" type="file" class="form-control" name="category"id="exampleInputPassword1">
     @error('image')
     <p class="text-danger">
       {{ $message }}

@@ -11,8 +11,14 @@
           <h4 class="text-white">Menu</h4>
           <ul class="list-unstyled">
             <li><a href="{{ route('home') }}" class="text-white">Home</a></li>
-            <li><a href="{{ route('article-list') }}" class="text-white">Articles</a></li>
-            <li><a href="#" class="text-white">Dashboard</a></li>
+            <li><a href="{{ route('articles.index') }}" class="text-white">Articles</a></li>
+            @auth
+            <li><a href="{{ route('account-dashboard') }}" class="text-white">Dashboard</a></li>
+            <li><a href="{{ route('account-logout') }}" class="text-white">Log Out</a></li>
+            @else
+            <li><a href="{{ route('account-login') }}" class="text-white">Login/Register</a></li>
+
+            @endauth
           </ul>
         </div>
       </div>

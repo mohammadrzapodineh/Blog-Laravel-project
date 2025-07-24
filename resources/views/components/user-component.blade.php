@@ -8,8 +8,12 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
 
-            <a href="{{ route('article-author-articles', ['user' =>  $user]) }}" class="btn btn-sm btn-outline-secondary">Articles</a>
+
+
             <span  class="btn btn-sm btn-outline-secondary"> Articles Count: <span class="text-primary">{{ $user->posts->count() }}</span></span>
+            <span  class="btn btn-sm btn-outline-secondary"><a href="{{ route('author-articles', $user) }}">
+              User Articles
+            </a></span>
                 </div>
               </div>
             </div>
