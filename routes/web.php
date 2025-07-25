@@ -37,7 +37,7 @@ Route::prefix('accounts')->name('account')->group(function (){
     Route::middleware('auth')->get('dashboard', [UserDashboardController::class, 'index'])->name('-dashboard');
 });
 
-Route::middleware(CheckUserAdmin::class)->prefix('admin')->name('admin.')->group(function (){
+Route::middleware(['auth', CheckUserAdmin::class])->prefix('admin')->name('admin.')->group(function (){
 
     Route::get('', [AdminDashboardController::class, 'index'])->name('home');
     Route::resource('users', UserAdminController::class);

@@ -1,7 +1,7 @@
 @extends('shared.dashboard.main-layout')
 
 
-@section('title', 'adminPage')
+@section('title', 'Users')
 
 @section('content')
                    <div class="col-sm-12 col-xl-12">
@@ -18,6 +18,7 @@
                                         <th scope="col">isAdmin</th>
                                         <th scope="col">isAuthor</th>
                                         <th scope="col">isStaff</th>
+                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -30,6 +31,18 @@
                                         <td>{{ $user->is_admin ? "True" : "False" }}</td>
                                         <td>{{ $user->is_author ? "True" : "False" }}</td>
                                         <td>{{ $user->is_staff ? "True" : "False" }}</td>
+                                        <td>
+                                        <a href="{{ route('admin.users.edit', $user) }}" class="text-warning">
+                                            <button class="btn btn-warning">
+                                            Edit
+                                            </button>
+                                        </a>
+                                        <form method="post" action="{{ route('admin.users.destroy', $user) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger">Delete</button></form>
+                                        
+                                        </td>
                                     </tr>
                                 @empty
                                 <div class="alert alert-danger" role="alert">
@@ -40,5 +53,9 @@
                                 </tbody>
                             </table>
                         </div>
+                       <div class="d-flex justify-content-center mt-3">
+    {{ $users->links() }}
+</div>
+
                     </div>
 @endsection

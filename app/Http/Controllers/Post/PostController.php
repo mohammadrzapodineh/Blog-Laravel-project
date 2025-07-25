@@ -24,7 +24,7 @@ class PostController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $articles = Post::orderBy('updated_at', 'desc')->paginate(2);
+        $articles = Post::orderBy('updated_at', 'desc')->paginate(20);
         return view('blog.article-list', compact('articles'));
     }
 

@@ -11,7 +11,7 @@ class AuthorArticleController extends Controller
 
     public function index(User $user)
     {
-        $articles = $user->posts()->get();
+        $articles = $user->posts()->paginate(10);
         $data = 
         [
             'articles' => $articles,

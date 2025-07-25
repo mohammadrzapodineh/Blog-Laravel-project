@@ -11,7 +11,7 @@ class AdminDashboardController extends Controller
 {
     public function index()
     {   
-        $users = User::orderByDesc('created_at')->limit(10)->get();
+        $users = User::orderByDesc('created_at')->limit(10)->paginate();
         return view('admin.home', compact('users'));
 
     }

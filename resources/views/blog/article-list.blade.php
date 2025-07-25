@@ -27,10 +27,12 @@
         @empty
         <p class="text text-danger">There is Not Article</p>
         @endforelse
-      
       </div>
 
-      
+ 
+    </div>
+           <div class="d-flex justify-content-center">
+        {{ $articles->links() }}
     </div>
   </div>
   

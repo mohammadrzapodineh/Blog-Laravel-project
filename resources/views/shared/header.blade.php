@@ -13,7 +13,11 @@
             <li><a href="{{ route('home') }}" class="text-white">Home</a></li>
             <li><a href="{{ route('articles.index') }}" class="text-white">Articles</a></li>
             @auth
+            @if(Auth::user()->is_admin)
+            <li><a href="{{ route('admin.home') }}" class="text-white">Admin Panel</a></li>
+            @endif
             <li><a href="{{ route('account-dashboard') }}" class="text-white">Dashboard</a></li>
+
             <li><a href="{{ route('account-logout') }}" class="text-white">Log Out</a></li>
             @else
             <li><a href="{{ route('account-login') }}" class="text-white">Login/Register</a></li>
