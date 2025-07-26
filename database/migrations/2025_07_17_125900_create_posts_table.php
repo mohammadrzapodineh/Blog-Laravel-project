@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('text');
             $table->integer('views')->nullable()->default(0);
 
-
+            $table->string('slug'); // Field name same as your `saveSlugsTo`
             $table->timestamps();
         });
 
