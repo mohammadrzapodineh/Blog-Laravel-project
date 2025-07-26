@@ -24,7 +24,7 @@ class PostRequest extends FormRequest
         $rules = [
                 'title' => ['required', 'max:255'],
                 'text' => ['required', 'max:500'],
-                'category' => ['required', 'min:5'],
+                'category' => ['required'],
                 'image_url' => ['image', 'max:3034', 'mimes:jpg,png']
         ];
         if ($this->isMethod('PUT'))

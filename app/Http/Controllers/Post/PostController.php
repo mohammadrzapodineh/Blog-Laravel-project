@@ -24,7 +24,16 @@ class PostController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $articles = Post::orderBy('updated_at', 'desc')->paginate(20);
+        $query = $query = Post::query();
+        $querySerach = request()->get('q');
+        if ($querySerach)
+        {
+            
+            $query->where('title', 'LIKE', "%{$querySerach}%")->orWhere(
+                'text', 'LIKE', "%{$querySerach}%"
+            );
+        }
+        $articles = $query->orderByDesc('updated_at')->paginate(20);
         return view('blog.article-list', compact('articles'));
     }
 

@@ -9,7 +9,7 @@
       <div class="col-lg-6 col-md-8 mx-auto">
         <h1 class="fw-light">
           @if(isset($author))
-          {{ "Articles of: $author" }}
+          {{ "Articles of: $author->name" }}
           @else
           {{ "Articles List" }}
           @endif
@@ -19,6 +19,10 @@
         </p>
       </div>
     </div>
+    <form class="d-flex" method="get" action="{{ isset($author) ? route("author-articles", $author) : route('articles.index') }}">
+  <input name="q" class="form-control me-2" type="search" placeholder="Search in Articles ..." aria-label="Search">
+  <button class="btn btn-outline-success" type="submit">Search</button>
+</form>
   </section>
 
       <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -32,7 +36,7 @@
  
     </div>
            <div class="d-flex justify-content-center">
-        {{ $articles->links() }}
+        {{ $articles->withQueryString()->links() }}
     </div>
   </div>
   

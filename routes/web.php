@@ -12,7 +12,7 @@ use App\Http\Controllers\Auth\UserDashboardController, App\Http\Controllers\Auth
 
 Route::get('', function()
 {
-   $users = User::orderByDesc('created_at')->get();
+   $users = User::orderByDesc('created_at')->paginate(10);
 
     return view('home', compact('users'));
 })->name('home');

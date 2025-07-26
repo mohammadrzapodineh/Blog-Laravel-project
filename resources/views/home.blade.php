@@ -37,6 +37,12 @@
         @endif        
 
       </div>
+      @if($users->links())
+        <div class="d-flex justify-content-center mt-4">
+        {{ $users->links() }}
+    </div>
+
+      @endif
     </div>
   </div>
 
