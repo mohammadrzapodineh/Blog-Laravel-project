@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\admin\AdminDashboardController;
 use App\Http\Controllers\admin\UserAdminController;
+use App\Http\Controllers\Api\ArticlesApi;
 use App\Http\Controllers\Auth\UserLoginController;
 use App\Http\Controllers\Post\PostController, App\Http\Controllers\Post\AuthorArticleController;
 use App\Http\Middleware\AuthMiddleware, App\Http\Middleware\CheckUserAdmin;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
+use App\Http\Controllers\Post\CommentController;
 use App\Http\Controllers\Auth\UserDashboardController, App\Http\Controllers\Auth\UserRegisterController;
 
 
@@ -18,7 +20,12 @@ Route::get('', function()
 })->name('home');
 
     
+Route::prefix('blog')->group(function(){
 Route::resource('articles', PostController::class);
+Route::post('add/comment/{post}', action: [CommentController::class, 'store'])->name('articles.comment.store');
+Route::middleware('auth')->delete('remove/comment/{comment}', [CommentController::class, 'destroy'])->name('articles.comment.remove');
+
+});
 
 Route::get('articles/author/{user}', [AuthorArticleController::class, 'index'])->name('author-articles');
 
@@ -40,11 +47,8 @@ Route::prefix('accounts')->name('account')->group(function (){
 Route::middleware(['auth', CheckUserAdmin::class])->prefix('admin')->name('admin.')->group(function (){
 
     Route::get('', [AdminDashboardController::class, 'index'])->name('home');
-    Route::resource('users', UserAdminController::class);
+    Route::resource('users', UserAdminController::class)->except(['show']);
 
 });
-
-
-
 
 

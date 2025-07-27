@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Blog\CommanetRequest;
 use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +27,7 @@ class PostController extends Controller implements HasMiddleware
     public function index()
     {
         $query = $query = Post::query();
+        $tags = Tag::all();
         $querySerach = request()->get('q');
         if ($querySerach)
         {
@@ -34,7 +37,11 @@ class PostController extends Controller implements HasMiddleware
             );
         }
         $articles = $query->orderByDesc('updated_at')->paginate(20);
-        return view('blog.article-list', compact('articles'));
+        $data = [
+            "articles" => $articles,
+            'tags' => $tags
+        ];
+        return view('blog.article-list', $data);
     }
 
     /**
@@ -73,6 +80,7 @@ class PostController extends Controller implements HasMiddleware
             "comments" => $comments,
             "article" => $article
         ];
+
         return view('blog.article-detail', $data);
     }
 
