@@ -15,7 +15,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
 
         $middleware->redirectGuestsTo(fn (Request $request) => route('account-login'));
-        // $middleware->redirectUsersTo(fn (Request $request) => route('account-dashboard'));
+        // $middleware->alias(
+        //     [
+        //         'admin' => \App\Http\Middleware\CheckUserAdmin::class,
+        //     ]
+        //     );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -4,10 +4,16 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\Api\Users\UserRequest As UserRequestApi;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use App\http\Middleware\CheckUserAdmin;
+use Illuminate\Routing\Controllers\Middleware;
 
 class PostController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -24,7 +30,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(UserRequestApi $request)
     {
         //
     }
