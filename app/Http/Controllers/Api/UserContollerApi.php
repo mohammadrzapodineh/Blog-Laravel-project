@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Users\UserUpdateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\Api\Users\UserRequest as UserRequestApi;
+use Illuminate\Contracts\Debug\ExceptionHandler;
+use Throwable;
 
 class UserContollerApi extends Controller
 {
@@ -32,6 +32,8 @@ class UserContollerApi extends Controller
     public function store(UserRequestApi $request)
     {
         
+        try
+        {
         $validatedData = $request->validated();
         $hashedPassword = Hash::make($validatedData['password']);
         $user = User::create([
@@ -41,6 +43,14 @@ class UserContollerApi extends Controller
         return response()->json([
             "detail" => $user
         ]);
+        }
+        catch(Throwable $th)
+        {
+            app()[ExceptionHandler::class]->report($th);
+            return response()->json([
+                "message" => "Internal Erorr"
+            ], 500);
+        }
     }
 
     /**
@@ -51,14 +61,35 @@ class UserContollerApi extends Controller
         return response()->json([
             "detail" => $user
         ]);
+    
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        try
+        {
+            $validatedData = $request->validated();
+            $user->update($validatedData);
+            return response()->json(
+                [
+                    "message" => "Your User Has Been Updated Succesfully",
+                    "detail" => $user
+                ]
+                );
+        }
+        catch(Throwable $th)
+        {
+            app()[ExceptionHandler::class]->report($th);
+            return response()->json(
+                [
+                    "detail" => "Internal Eror Please contact To Admin"
+                ],500
+                );
+        }
     }
 
     /**
@@ -66,18 +97,31 @@ class UserContollerApi extends Controller
      */
     public function destroy(User $user)
     {
-        $userEmail = $user->name;
-        $userId = $user->id;
-        $user->delete();
-        return response()->json(
-            [
-                "detail" => [
-                    "userId" => $userId,
-                    "userEmail" => $userEmail,
-                    "Message" => "User Has Deleted SuccessFully"
+        try
+        {
+            $userEmail = $user->name;
+            $userId = $user->id;
+            $user->delete();
+            return response()->json(
+                [
+                    "detail" => [
+                        "userId" => $userId,
+                        "userEmail" => $userEmail,
+                        "Message" => "User Has Deleted SuccessFully"
+                    ]
                 ]
-            ]
+                    );
+        }
+
+        catch(Throwable $th)
+        {
+            app()[ExceptionHandler::class]->report($th);
+            return response()->json(
+                [
+                    "detail" => "Internal Erorr"
+                ], 500
                 );
+        }
 
     }
 }
