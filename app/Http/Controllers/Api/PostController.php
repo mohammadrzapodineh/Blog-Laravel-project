@@ -100,6 +100,24 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        try
+        {
+            $post->delete();
+            return response()->json(
+                [
+                    "detail" => "Your Post Deleted SuccsessFully"
+                ],201
+                );
+        }
+        
+        catch(Throwable $th)
+        {
+            app()[ExceptionHandler::class]->report($th);
+            return response()->json(
+                [
+                    "detail" => "Internale Server Erorr"
+                ], 500
+            );
+        }
     }
 }
