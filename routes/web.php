@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use App\Http\Controllers\Post\CommentController;
 use App\Http\Controllers\Auth\UserDashboardController, App\Http\Controllers\Auth\UserRegisterController;
-
+use App\Http\Controllers\Tag\TagController;
 
 Route::get('', function()
 {
@@ -25,7 +25,20 @@ Route::resource('articles', PostController::class);
 Route::post('add/comment/{post}', action: [CommentController::class, 'store'])->name('articles.comment.store');
 Route::middleware('auth')->delete('remove/comment/{comment}', [CommentController::class, 'destroy'])->name('articles.comment.remove');
 
+
+Route::prefix('tags')->group(function(){
+Route::get('{tag}', [TagController::class, 'index'])->name('tag.articles');
 });
+
+
+});
+
+
+
+
+
+
+
 
 Route::get('articles/author/{user}', [AuthorArticleController::class, 'index'])->name('author-articles');
 

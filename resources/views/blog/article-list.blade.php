@@ -72,7 +72,7 @@
             </div>
             <div class="card-body">
               @forelse($tags as $tag)
-                <a href="#" class="badge bg-dark text-white text-decoration-none m-1 p-2">{{ $tag->title }}</a>
+                <a href="{{ $tag->getAbsoluteUrl() }}" class="badge bg-dark text-white text-decoration-none m-1 p-2">{{ $tag->title }}</a>
               @empty
                 <p class="text-muted">No tags</p>
               @endforelse
