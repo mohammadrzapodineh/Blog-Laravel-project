@@ -16,7 +16,7 @@ class Post extends Model
     // If Your Table Name And Not Equal to Your Model Class Name
     protected $table = 'posts';
     protected $fillable = ['title', 'text', 'category', 'image_url', 'user_id'];
-
+    protected $appends = ['snipted_text'];
 
     public function user() : BelongsTo
     {
@@ -43,6 +43,12 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function getSniptedTextAttribute()
+    {
+        // This Function Retrun 100 Char Of Text 
+        $data = substr($this->text, 0, 100) . "...";
+        return $data;
+    }
 
 
 

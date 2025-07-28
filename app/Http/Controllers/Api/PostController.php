@@ -1,14 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Posts\PostUpdateRequest;
+use App\Http\Resources\Api\Posts\PostDetailViewRerouce;
 use App\Models\Post;
-use Illuminate\Routing\Controllers\HasMiddleware;
 use App\Http\Requests\Api\Posts\PostStoreRequest;
+use App\Http\Resources\Api\Posts\PostListResource;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Routing\Controllers\Middleware;
 use Throwable;
 
 class PostController extends Controller
@@ -17,12 +16,9 @@ class PostController extends Controller
 
     public function index()
     {
+        
         $posts = Post::with('user:id,name')->paginate(20);
-        $data = 
-        [
-            "detail" => $posts
-        ];
-        return response()->json($data);
+        return PostListResource::collection($posts);
     }
 
     /**
@@ -60,11 +56,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return response()->json(
-            [
-                "Detail" => $post
-            ]
-            );
+        return new PostDetailViewRerouce($post);
     }
 
     /**
