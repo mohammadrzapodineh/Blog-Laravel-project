@@ -7,6 +7,8 @@ use App\Http\Requests\Api\Users\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\Api\Users\UserRequest as UserRequestApi;
+use App\Http\Resources\Api\Users\UserDetailResource;
+use App\Http\Resources\Api\Users\UserListReource;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Throwable;
 
@@ -18,12 +20,8 @@ class UserContollerApi extends Controller
     public function index()
     {
         $users = User::paginate(20);
-        
-        return response()->json(
-            [
-                "detail" => $users
-            ]
-            );
+    
+        return UserListReource::collection($users);
     }
 
     /**
@@ -40,9 +38,7 @@ class UserContollerApi extends Controller
             "password" => $hashedPassword,
             ...$validatedData
         ]);
-        return response()->json([
-            "detail" => $user
-        ]);
+        return new UserDetailResource($user);
         }
         catch(Throwable $th)
         {
@@ -58,9 +54,7 @@ class UserContollerApi extends Controller
      */
     public function show(User $user)
     {
-        return response()->json([
-            "detail" => $user
-        ]);
+        return new UserDetailResource($user);
     
 
     }
@@ -74,12 +68,7 @@ class UserContollerApi extends Controller
         {
             $validatedData = $request->validated();
             $user->update($validatedData);
-            return response()->json(
-                [
-                    "message" => "Your User Has Been Updated Succesfully",
-                    "detail" => $user
-                ]
-                );
+            return new UserDetailResource($user);
         }
         catch(Throwable $th)
         {

@@ -17,7 +17,7 @@ class PostController extends Controller
 
     public function index()
     {
-        $posts = Post::paginate(10);
+        $posts = Post::with('user:id,name')->paginate(20);
         $data = 
         [
             "detail" => $posts
