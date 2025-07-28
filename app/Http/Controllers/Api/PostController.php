@@ -3,20 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Posts\PostUpdateRequest;
 use App\Models\Post;
-use App\Models\User;
-use Illuminate\Http\Request;
-use App\Http\Requests\Api\Users\UserRequest As UserRequestApi;
 use Illuminate\Routing\Controllers\HasMiddleware;
-use App\http\Middleware\CheckUserAdmin;
+use App\Http\Requests\Api\Posts\PostStoreRequest;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Routing\Controllers\Middleware;
+use Throwable;
 
 class PostController extends Controller
 {
 
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
         $posts = Post::paginate(10);
@@ -30,9 +28,31 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserRequestApi $request)
+    public function store(PostStoreRequest $request)
     {
-        //
+        try
+        {
+
+            $validatedData = $request->validated();
+            $post = Post::create($validatedData);
+            $data = 
+            [   "message" => "Your Post Created SuccessFully",
+                "detail" => $post
+            ];  
+            return response()->json($data);
+
+
+        }
+        catch(Throwable $th)
+        {
+            // Report Execption To Telescope
+            app()[ExceptionHandler::class]->report($th);
+            return response()->json(
+                [
+                    "error" => "Internal Erorr Please Contact The Admin"
+                ]
+                );
+        }
     }
 
     /**
@@ -50,9 +70,29 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(PostUpdateRequest $request, Post $post)
     {
-        //
+        try
+        {
+            $validaedData = $request->validated();
+            $post->update($validaedData);
+            return response()->json(
+                [
+                    "message" => "Your Post Updated SuccessFully",
+                    "detail" => $post
+                ]
+                );
+        }
+
+        catch(Throwable $th)
+        {
+            app()[ExceptionHandler::class]->report($th);
+            return response()->json(
+                [
+                    "detail" => "Internale Server Erorr"
+                ], 500
+            );
+        }
     }
 
     /**
