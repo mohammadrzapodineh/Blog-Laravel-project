@@ -31,11 +31,7 @@ class PostController extends Controller
 
             $validatedData = $request->validated();
             $post = Post::create($validatedData);
-            $data = 
-            [   "message" => "Your Post Created SuccessFully",
-                "detail" => $post
-            ];  
-            return response()->json($data);
+            return new PostListResource($post);
 
 
         }
@@ -68,12 +64,7 @@ class PostController extends Controller
         {
             $validaedData = $request->validated();
             $post->update($validaedData);
-            return response()->json(
-                [
-                    "message" => "Your Post Updated SuccessFully",
-                    "detail" => $post
-                ]
-                );
+            return new PostDetailViewRerouce($post);
         }
 
         catch(Throwable $th)
