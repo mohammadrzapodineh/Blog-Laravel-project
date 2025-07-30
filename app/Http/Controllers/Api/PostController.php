@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Posts\PostUpdateRequest;
 use App\Http\Resources\Api\Posts\PostDetailViewRerouce;
 use App\Models\Post;
-use App\Http\Requests\Api\Posts\PostStoreRequest;
 use App\Http\Resources\Api\Posts\PostListResource;
-use Illuminate\Contracts\Debug\ExceptionHandler;
-use Throwable;
+use App\Http\ApiRequests\Admin\Post\PostStoreRequest;
+use App\Http\ApiRequests\Admin\Post\PostUpdateRequest;
+use App\Services\PostService;
+
 
 class PostController extends Controller
 {
@@ -26,25 +27,17 @@ class PostController extends Controller
      */
     public function store(PostStoreRequest $request)
     {
-        try
+
+        $postService = new PostService();
+        $reponse = $postService->createPost($request->validated());
+
+        if (!$reponse->isOk)
         {
-
-            $validatedData = $request->validated();
-            $post = Post::create($validatedData);
-            return new PostListResource($post);
-
-
+            return ApiResponse::error()->response();
         }
-        catch(Throwable $th)
-        {
-            // Report Execption To Telescope
-            app()[ExceptionHandler::class]->report($th);
-            return response()->json(
-                [
-                    "error" => "Internal Erorr Please Contact The Admin"
-                ]
-                );
-        }
+
+        return new PostListResource($reponse->data);
+
     }
 
     /**
@@ -60,47 +53,30 @@ class PostController extends Controller
      */
     public function update(PostUpdateRequest $request, Post $post)
     {
-        try
-        {
-            $validaedData = $request->validated();
-            $post->update($validaedData);
-            return new PostDetailViewRerouce($post);
-        }
+        $postService = new PostService();
+        $response = $postService->updatePost($post, $request->validated());
 
-        catch(Throwable $th)
+        if(!$response->isOk)
         {
-            app()[ExceptionHandler::class]->report($th);
-            return response()->json(
-                [
-                    "detail" => "Internale Server Erorr"
-                ], 500
-            );
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Post $post)
-    {
-        try
-        {
-            $post->delete();
-            return response()->json(
-                [
-                    "detail" => "Your Post Deleted SuccsessFully"
-                ],201
-                );
+            return ApiResponse::error()->response();
         }
         
-        catch(Throwable $th)
+        return new PostDetailViewRerouce($response->data);
+
+    }   
+
+
+    public function destroy(Post $post)
+    {
+        $postService = new PostService();
+        $response = $postService->destryoPost($post);
+
+        if (!$response->isOk)
         {
-            app()[ExceptionHandler::class]->report($th);
-            return response()->json(
-                [
-                    "detail" => "Internale Server Erorr"
-                ], 500
-            );
+            return ApiResponse::error()->response();
         }
+
+        return ApiResponse::success($response->message, status:204)->response();
     }
+
 }

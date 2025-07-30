@@ -1,16 +1,13 @@
 <?php
 
 namespace App\Http\Requests\Api\Users;
-
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
-use Illuminate\Contracts\Validation\Validator;
+use App\Http\Requests\Api\BaseApiFormRequest;
 
 use Illuminate\Validation\Rules\Password;
 
 
-class UserUpdateRequest extends FormRequest
+class UserUpdateRequest extends BaseApiFormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -37,15 +34,5 @@ class UserUpdateRequest extends FormRequest
 
 
 
-    }
-    protected function failedValidation(Validator $validator)
-    {
-        throw new HttpResponseException(
-            response()->json(
-                [
-                    "errors" => $validator->errors()
-                ], 422
-            )
-        );
     }
 }

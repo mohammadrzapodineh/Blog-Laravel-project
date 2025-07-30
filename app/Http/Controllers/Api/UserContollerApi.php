@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\ApiRequests\Admin\User\UserStoreRequest;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Users\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\Api\Users\UserRequest as UserRequestApi;
 use App\Http\Resources\Api\Users\UserDetailResource;
 use App\Http\Resources\Api\Users\UserListReource;
 use Illuminate\Contracts\Debug\ExceptionHandler;
 use Throwable;
+
+
 
 class UserContollerApi extends Controller
 {
@@ -27,7 +29,7 @@ class UserContollerApi extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(UserRequestApi $request)
+    public function store(UserStoreRequest $request)
     {
         
         try
