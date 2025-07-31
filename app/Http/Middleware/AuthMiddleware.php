@@ -21,5 +21,7 @@ class AuthMiddleware
             return $next($request);
         }
         return redirect()->route('account-login')->with('messages', 'Please Login And try Agian');
+
+        
     }
 }
