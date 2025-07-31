@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Post;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\Tag;
 use App\Models\User;
 
 class AuthorArticleController extends Controller
@@ -21,10 +22,13 @@ class AuthorArticleController extends Controller
     });
 }
         $articles = $query->orderByDesc('updated_at')->paginate(1);
+
+        $tags = Tag::all();
         $data = 
         [
             'articles' => $articles,
-            'author' => $user
+            'author' => $user,
+            "tags" => $tags
         ];
         return view('blog.article-list',$data);
     }

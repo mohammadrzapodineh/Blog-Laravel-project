@@ -8,18 +8,28 @@ use App\Models\Post;
 use App\Http\Resources\Api\Posts\PostListResource;
 use App\Http\ApiRequests\Admin\Post\PostStoreRequest;
 use App\Http\ApiRequests\Admin\Post\PostUpdateRequest;
+use App\Http\Resources\Api\Posts\PostListRrescourceCollection;
 use App\Services\PostService;
 
 
 class PostController extends Controller
 {
 
+    public function __construct(public PostService $postService)
+    {
+
+    }
 
     public function index()
     {
-        
-        $posts = Post::with('user:id,name')->paginate(20);
-        return PostListResource::collection($posts);
+        $response = $this->postService->getAllPosts(2);
+
+        if (!$response->isOk)
+        {
+             return ApiResponse::error()->response();
+        }
+
+        return ApiResponse::success(data: new PostListRrescourceCollection($response->data), status:200)->response();
     }
 
     /**
@@ -28,8 +38,7 @@ class PostController extends Controller
     public function store(PostStoreRequest $request)
     {
 
-        $postService = new PostService();
-        $reponse = $postService->createPost($request->validated());
+        $reponse = $this->postService->createPost($request->validated());
 
         if (!$reponse->isOk)
         {
@@ -53,8 +62,7 @@ class PostController extends Controller
      */
     public function update(PostUpdateRequest $request, Post $post)
     {
-        $postService = new PostService();
-        $response = $postService->updatePost($post, $request->validated());
+        $response = $this->postService->updatePost($post, $request->validated());
 
         if(!$response->isOk)
         {
@@ -68,15 +76,14 @@ class PostController extends Controller
 
     public function destroy(Post $post)
     {
-        $postService = new PostService();
-        $response = $postService->destryoPost($post);
+        $response = $this->postService->destryoPost($post);
 
         if (!$response->isOk)
         {
             return ApiResponse::error()->response();
         }
 
-        return ApiResponse::success($response->message, status:204)->response();
+        return ApiResponse::success()->response();
     }
 
 }

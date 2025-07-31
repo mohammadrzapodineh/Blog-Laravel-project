@@ -49,21 +49,6 @@
         <!-- Sidebar -->
         <div class="col-lg-4">
           <!-- Categories -->
-          <div class="card mb-4 shadow-sm">
-            <div class="card-header bg-primary text-white">
-              <h5 class="mb-0">Latest Categories</h5>
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="#" class="text-decoration-none text-dark">Category 1</a>
-                <span class="badge bg-primary rounded-pill">5</span>
-              </li>
-              <li class="list-group-item d-flex justify-content-between align-items-center">
-                <a href="#" class="text-decoration-none text-dark">Category 2</a>
-                <span class="badge bg-primary rounded-pill">3</span>
-              </li>
-            </ul>
-          </div>
 
           <!-- Tags -->
           <div class="card shadow-sm">
