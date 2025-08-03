@@ -13,7 +13,7 @@ use App\Http\Resources\Api\Users\UserListRrescourceCollection;
 
 use App\Services\UserService;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-
+use Illuminate\Support\Facades\Gate;
 use Throwable;
 
 class UserContollerApi extends Controller
@@ -27,6 +27,10 @@ class UserContollerApi extends Controller
 
     public function index()
     {
+        if (!Gate::allows('adminStaff'))
+        {
+            return ApiResponse::error("Access Diend", status:403)->response();
+        }
         $users = User::paginate(2);
     
         return ApiResponse::success( data:new UserListRrescourceCollection($users), status: 201)->response();

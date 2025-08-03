@@ -20,4 +20,16 @@ class BaseApiFormRequest extends FormRequest
             )
         );
     }
+
+    protected function failedAuthorization()
+    {
+        throw new HttpResponseException(
+            response()->json(
+                [
+                    "errors" => "Access Diend"
+                ], 403
+            )
+        );
+
+    }
 }

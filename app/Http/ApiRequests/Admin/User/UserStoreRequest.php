@@ -2,6 +2,7 @@
 
 namespace App\Http\ApiRequests\Admin\User;
 use App\Http\Requests\Api\BaseApiFormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rules\Password;
 
 class UserStoreRequest extends BaseApiFormRequest
@@ -10,7 +11,7 @@ class UserStoreRequest extends BaseApiFormRequest
 
     public function authorize(): bool
     {
-        return true;
+        return Gate::allows('adminStaff');
     }
 
 
